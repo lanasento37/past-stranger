@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Kenangan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS: GAYA TAMPILAN --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+        body {
+            background: radial-gradient(circle at center, #3d0101 0%, #000000 100%);
+            background-attachment: fixed;
+            color: white;
+            padding: 20px;
+            overflow-x: hidden;
+            min-height: 100vh;
+            transition: 0.5s;
+        }
+
+        .container { max-width: 600px; margin: 0 auto; }
+
+        header { text-align: center; padding: 30px 0; }
+        h1 { color: #ff4d4d; text-shadow: 0 0 10px rgba(255, 77, 77, 0.5); margin-bottom: 10px; }
+
+        .theme-switch button {
+            padding: 10px 20px; border-radius: 20px; border: 1px solid #ff4d4d;
+            background: transparent; color: white; margin: 5px; cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .active { background: #ff4d4d !important; box-shadow: 0 0 15px #ff4d4d; }
+
+        /* Efek Mengambang (Floating) */
+        .song-card, .memory-card, .chat-container, .kid-photo-wrapper, .hero-card {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* Playlist Lagu */
+        .playlist { display: flex; gap: 15px; overflow-x: auto; padding: 15px 0; scrollbar-width: none; }
+        .song-card {
+            background: rgba(255, 255, 255, 0.05); padding: 15px;
+            border-radius: 20px; min-width: 160px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .album-art { width: 100%; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+        .album-art img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Bagian Umum */
+        .section { margin-bottom: 35px; }
+        .memory-card { background: rgba(255, 255, 255, 0.05); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .memory-img img { width: 100%; height: auto; display: block; }
+        .memory-info { padding: 20px; }
+
+        /* Chat Style */
+        .chat-container { display: flex; flex-direction: column; gap: 10px; padding: 20px; background: rgba(255, 255, 255, 0.03); border-radius: 25px; }
+        .chat-bubble { max-width: 80%; padding: 12px 16px; border-radius: 20px; font-size: 0.95rem; line-height: 1.4; }
+        .left { align-self: flex-start; background: #4a0404; color: white; border-bottom-left-radius: 4px; }
+        .right { align-self: flex-end; background: #222; color: white; border-bottom-right-radius: 4px; }
+
+        /* Split Foto Kecil (BALIK KE AWAL, 2 FOTO JEJER) */
+        .kid-photos-split { display: flex; gap: 15px; margin-top: 15px; }
+        .kid-photo-wrapper { flex: 1; background: rgba(255, 255, 255, 0.05); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .kid-photo-wrapper img { width: 100%; height: 150px; object-fit: cover; display: block; }
+
+        /* --- UPDATE TOTAL: CSS HERO ML AGAR WAJAH KELIHATAN --- */
+        .hero-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            margin-top: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .hero-img {
+            width: 100%;
+            background: #1a1a1a; /* Kasih background gelap biar art-nya rapi */
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .hero-img img {
+            width: 100%; /* Art-nya full lebar kotak */
+            height: auto; /* Tinggi mengikuti proporsi asli, GAK BAKAL KEPOTONG */
+            display: block;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .hero-desc {
+            padding: 15px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #ddd;
+            font-style: italic;
+        }
+
+        /* Mode Monokrom */
+        .theme-monokrom { background: #000; }
+        .theme-monokrom h1 { color: #777; text-shadow: none; }
+        .theme-monokrom img { filter: grayscale(100%); opacity: 0.5; }
+        .theme-monokrom .left { background: #1a1a1a; border: 1px solid #333; }
+    </style>
+</head>
+<body class="theme-warna">
+
+    <div class="container">
+        <header>
+            <h1>Website Kenangan</h1>
+            <p>Simpan momen indah di sini.</p>
+            <div class="theme-switch">
+                <button onclick="changeTheme('warna')" id="btn-warna" class="active">Mode Berwarna</button>
+                <button onclick="changeTheme('monokrom')" id="btn-monokrom">Mode Monokrom</button>
+            </div>
+        </header>
+
+        <section class="section">
+            <h2>Lagu Favorit Kita <i class="fas fa-music"></i></h2>
+            <div class="playlist">
+                <div class="song-card"><div class="album-art"><img src="Scott.jpg" alt="Scott"></div><h3>Scott Street</h3><p>Phoebe Bridgers</p></div>
+                <div class="song-card"><div class="album-art"><img src="Those.jpg" alt="Those"></div><h3>Those Eyes</h3><p>New West</p></div>
+                <div class="song-card"><div class="album-art"><img src="Here.jpg" alt="Here"></div><h3>Here With Me</h3><p>d4vd</p></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Cerita Kenangan Kita</h2>
+            <div class="memory-card">
+                <div class="memory-info">
+                    <h3>Momen Indah</h3>
+                    <p>sering mabal mobile legend, roblox</p>
+                </div>
+                <div class="memory-img">
+                    <img src="Sybau.jpg" alt="Sybau">
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Cuplikan Chat <i class="fas fa-comment-dots"></i></h2>
+            <div class="chat-container">
+                <div class="chat-bubble left"><p>imy</p></div>
+                <div class="chat-bubble right"><p>SERIUSSS??</p></div>
+                <div class="chat-bubble left"><p>tapi boong</p></div>
+                <div class="chat-bubble right"><p>anj lah</p></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>dirimu waktu kecil 🗿😹</h2>
+            <div class="kid-photos-split">
+                <div class="kid-photo-wrapper"><img src="kecil1.jpg" alt="Kecil 1"></div>
+                <div class="kid-photo-wrapper"><img src="kecil2.jpg" alt="Kecil 2"></div>
+            </div>
+        </section>
+
+        <section class="section" style="margin-bottom: 100px;">
+            <h2>hero favoritmu di mobile legend 🤭</h2>
+            
+            <div class="hero-card">
+                <div class="hero-img">
+                    <img src="Lylia.jpg" alt="Lylia Savage">
+                </div>
+                <div class="hero-desc">
+                    lu kalau pake ini jago banget bjir 🥶🥶, bahkan pernah savage waktu mabar
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <div class="hero-img">
+                    <img src="Kagura.jpg" alt="Kagura Gusion">
+                </div>
+                <div class="hero-desc">
+                    kalau ini jago juga, cuman jarang liat lu pake kagura, intinya ya jago lah 👍🏻
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        function changeTheme(mode) {
+            document.body.className = 'theme-' + mode;
+            document.getElementById('btn-warna').className = (mode === 'warna' ? 'active' : '');
+            document.getElementById('btn-monokrom').className = (mode === 'monokrom' ? 'active' : '');
+        }
+
+        function createRose() {
+            const rose = document.createElement('div');
+            const isMonochrome = document.body.classList.contains('theme-monokrom');
+            rose.innerHTML = isMonochrome ? '🥀' : '🌹'; 
+            rose.style.position = 'fixed';
+            rose.style.top = '-50px';
+            rose.style.left = Math.random() * 100 + 'vw';
+            rose.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            rose.style.zIndex = '9999';
+            rose.style.pointerEvents = 'none';
+            
+            const duration = Math.random() * 3000 + 4000;
+            const animation = rose.animate([
+                { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                { transform: `translateY(110vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: duration,
+                easing: 'linear'
+            });
+
+            document.body.appendChild(rose);
+            animation.onfinish = () => rose.remove();
+        }
+
+        setInterval(createRose, 450);
+    </script>
+</body>
+</html>
